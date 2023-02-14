@@ -1,0 +1,51 @@
+package com.smita.hbr.HibernateDemo;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args ) throws IOException
+    {
+    	Configuration cfg = new Configuration();
+    	cfg.configure("hibernate.cfg.xml");
+    	SessionFactory factory = cfg.buildSessionFactory();
+    	
+    	Country c=new Country();
+    	
+    	c.setName("Africa");
+    	c.setLang("Aafri");
+    	c.setPm("fbdgdf");
+    	c.setStCount(23);
+    	
+    	//setting image
+    	FileInputStream f = new FileInputStream("src/main/java/a.jpg");
+    	byte[] b =new byte[f.available()];
+    	f.read(b);
+    	c.setImage(b);
+    	
+    	Session session = factory.openSession();
+    	Transaction transaction = session.beginTransaction();// to changes in database
+
+    	
+    	//session.save(c); //work outside transaction also
+    	session.persist(c);//required transaction start
+    	transaction.commit();
+    	
+    	session.close();
+    	factory.close();
+    	
+    	
+    	
+    	
+    }
+}
